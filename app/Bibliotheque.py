@@ -1,0 +1,84 @@
+class Book:
+    def __init__(self,title,author):
+        if not isinstance(title, str) or title == "" or not isinstance(author, str) or author == "":
+            raise ValueError("Les entrées doivent être des strings et complets")
+        self.title = title 
+        self.author = author
+        self.is_checked_out = False
+    
+    def check_out(self):
+        self.is_checked_out = True
+        print(f"{self.title}by {self.author}has been checked out.")
+        
+    def check_in(self):
+        self.is_checked_out = False
+        print(f"{self.title}by {self.author}has been checked in.")
+
+
+class Library:
+    def __init__(self):
+        self.books = []
+        
+    def add_book(self,book):
+        if not isinstance(book, Book):
+            raise ValueError("Les entrées doivent être des Book")
+        self.books.append(book)
+        print(f"{book.title}by {book.author}has been added to the library.")
+        
+    def check_out_book(self,title):
+        if not isinstance(title, str) or title == "":
+            raise ValueError("Les entrées doivent être des strings complets")
+        for book in self.books:
+            if book.title == title and not book.is_checked_out:
+                book.check_out()
+                return 
+        print(f"Sorry, {title}is not available.")
+                
+    def check_in_book(self,title):
+        if not isinstance(title, str) or title == "":
+            raise ValueError("Les entrées doivent être des strings complets")
+        for book in self.books:
+            if book.title == title and book.is_checked_out:
+                book.check_in()
+                return
+        print(f"Sorry, {title}is not in the library.")
+
+
+class Client:
+    def __init__(self,name):
+        if not isinstance(name, str) or name == "":
+            raise ValueError("Les entrées doivent être des strings et complets")
+        self.name = name
+        self.checked_out_books = []
+        
+    def check_out_book(self,library,title):
+        if not isinstance(library, Library) or not isinstance(title, str) or title == "":
+            raise ValueError("Les entrées doivent completes et du bon type")
+        for book in library.books:
+            if book.title == title and not book.is_checked_out:
+                book.check_out()
+                self.checked_out_books.append(book)
+                return
+        print(f"Sorry, {title}is not available.")
+        
+    def check_in_book(self,library,title):
+        if not isinstance(library, Library) or not isinstance(title, str) or title == "":
+            raise ValueError("Les entrées doivent completes et du bon type")
+        for book in self.checked_out_books:
+            if book.title == title:
+                book.check_in()
+                self.checked_out_books.remove(book)
+                return
+        print(f"Sorry, {title}is not checked out.")
+        
+'''library = Library()
+book1 = Book("To Kill a Mockingbird","Harper Lee")
+library.add_book(book1)
+book2 = Book("Pride and Prejudice","Jane Austen")
+library.add_book(book2)
+client1 = Client("John Doe")
+client1.check_out_book(library,"To Kill a Mockingbird")
+client1.check_out_book(library,"Pride and Prejudice")
+client2 = Client("Jane Doe")
+client2.check_out_book(library,"To Kill a Mockingbird")
+client1.check_in_book(library,"To Kill a Mockingbird")'''
